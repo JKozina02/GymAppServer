@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    container_name: gymappserver
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:password@db/gymapp
+
+  db:
+    image: mysql:8.0
+    container_name: gymappdb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: gymapp
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
