@@ -22,17 +22,15 @@ def createUser(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
-    # if validateEmail(emailToValidate):
-    #     hashPassword = getHashedPassword(password)
-    #     users.append(User(
-    #         username=username,
-    #         email=emailToValidate,
-    #         password=hashPassword
-    #     ))
-    #     return "Email valid"
-    # else:
-    #     return "Email already exists"
+def boolEmailExists(db: Session, user: schemas.LoginUser):
+    return db.query(models.User).filter(models.User.email == user.email).first() is not None
 
-# def loginUser(email: EmailStr, password: str):
-#     return (user.email == email and verifyPassword(user.password, password) for user in users)
-
+def loginUser(db: Session, user: schemas.LoginUser):
+    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+    if not existing_user:
+        raise ValueError("No account found with the provided email")
+    
+    if not verifyPassword(existing_user.password, user.password):
+        raise ValueError("Incorrect password")
+    
+    return existing_user

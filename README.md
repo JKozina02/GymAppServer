@@ -1,10 +1,16 @@
 # GymAppServer
 Server with api for GymApp 
 
-## Starting server
+## Creating virtual envirement
+ - `python -m venv .venv`
+## Lunching virtual envirement
+ - `.\.venv\Scripts\activate`
+## Instaling dependencies inside venv
+ - `pip install -r requirements.txt`
 
-docker-compose up --build
+# Starting server
 
+`docker-compose up --build`
 
 ## Usefull commands
 

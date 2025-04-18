@@ -11,3 +11,6 @@ class ExerciseCreate(BaseModel):
     reps: bool
     weight: bool
 
+class LoginUser(BaseModel):
+    email: EmailStr
+    password: str
