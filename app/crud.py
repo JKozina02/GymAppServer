@@ -34,3 +34,16 @@ def loginUser(db: Session, user: schemas.LoginUser):
         raise ValueError("Incorrect password")
     
     return existing_user
+
+def getExercises(db: Session, name: str = None):
+    if name:
+        return db.query(models.Exercise).filter(models.Exercise.name.ilike(f"%{name}%")).all()
+    else:
+        return db.query(models.Exercise).all()
+    
+def createExercises(db: Session, exercise: schemas.ExerciseCreate):
+    db_exercise = models.Exercise(name=exercise.name , time=exercise.time, reps=exercise.reps, weight=exercise.weight)
+    db.add(db_exercise)
+    db.commit()
+    db.refresh(db_exercise)
+    return db_exercise

@@ -17,3 +17,6 @@ class Exercise(Base):
     time = Column(Boolean, default=False)
     reps = Column(Boolean, default=False)
     weight = Column(Boolean, default=False)
+    
+    class Config:
+        orm_mode = True

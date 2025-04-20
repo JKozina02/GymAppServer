@@ -12,18 +12,18 @@ async def startup_event():
 @app.post("/create-user/")
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     try:
-        crud.createUser(db, user)
-        return {"status_code": 200, "message":"User created succesfully!"}
+        user = crud.createUser(db, user)
+        return {"status_code":200, "message":"User created succesfully!", "user": user}
     except ValueError as e:
         return HTTPException(status_code=400, detail=str(e))
     except Exception as a:
         return HTTPException(status_code=500, detail=str(a))
 
-@app.post("/check-user/")
+@app.get("/check-user/")
 def check_user(user: schemas.LoginUser, db: Session = Depends(get_db)):
     try:
-        crud.boolEmailExists(db, user)
-        return {"status_code": 200, "message":"Email valid!"}
+        ans = crud.boolEmailExists(db, user)
+        return {"status_code":200, "message":"Email valid!", "userExists":ans}
     except ValueError as e:
         return HTTPException(status_code=400, detail=str(e))
     except Exception as a:
@@ -33,8 +33,24 @@ def check_user(user: schemas.LoginUser, db: Session = Depends(get_db)):
 def login_user(user: schemas.LoginUser, db: Session = Depends(get_db)):
     try:
         crud.loginUser(db, user)
-        return {"status_code": 200, "message":"User logged In!"}
+        return {"status_code":200, "message":"User logged In!"}
     except ValueError as e:
         return HTTPException(status_code=400, detail=str(e))
+    except Exception as a:
+        return HTTPException(status_code=500, detail=str(a))
+    
+@app.get("/get-exercises/")
+def get_exercises(name: str = None, db: Session = Depends(get_db)):
+    try:
+        exercises = crud.getExercises(db, name)
+        return {"status_code":200, "exercises":exercises}
+    except Exception as a:
+        return HTTPException(status_code=500, detail=str(a))
+    
+@app.post("/create-exercise/")
+def create_exercise(exercise: schemas.ExerciseCreate, db: Session = Depends(get_db)):
+    try:
+        exercise = crud.createExercises(db, exercise)
+        return {"status_code":200, "message":"Exercise created succesfully!", "exercise": exercise}
     except Exception as a:
         return HTTPException(status_code=500, detail=str(a))
