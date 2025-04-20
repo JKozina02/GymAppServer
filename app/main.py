@@ -32,8 +32,8 @@ def check_user(user: schemas.LoginUser, db: Session = Depends(get_db)):
 @app.post("/login-user/")
 def login_user(user: schemas.LoginUser, db: Session = Depends(get_db)):
     try:
-        crud.loginUser(db, user)
-        return {"status_code":200, "message":"User logged In!"}
+        loggedIn = crud.loginUser(db, user)
+        return {"status_code":200, "message":"User logged In!", "loggedIn": loggedIn}
     except ValueError as e:
         return HTTPException(status_code=400, detail=str(e))
     except Exception as a:

@@ -26,14 +26,16 @@ def boolEmailExists(db: Session, user: schemas.LoginUser):
     return db.query(models.User).filter(models.User.email == user.email).first() is not None
 
 def loginUser(db: Session, user: schemas.LoginUser):
+    loggedIn = False
     existing_user = db.query(models.User).filter(models.User.email == user.email).first()
     if not existing_user:
         raise ValueError("No account found with the provided email")
-    
-    if not verifyPassword(existing_user.password, user.password):
+        
+    if verifyPassword(existing_user.password, user.password):
         raise ValueError("Incorrect password")
     
-    return existing_user
+    loggedIn = True
+    return loggedIn
 
 def getExercises(db: Session, name: str = None):
     if name:
