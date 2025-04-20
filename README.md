@@ -34,7 +34,7 @@ response
     "status_code":num, "message":str, "user":user
 }
 
-### Checks if u email is in database
+### Checks if email is in database
 `GET` `/check-user/`
 body
 {
