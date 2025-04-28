@@ -49,3 +49,24 @@ def createExercises(db: Session, exercise: schemas.ExerciseCreate):
     db.commit()
     db.refresh(db_exercise)
     return db_exercise
+
+def deleteExercise(db: Session, exercise_id: int):
+    exercise = db.query(models.Exercise).filter(models.Exercise.id == exercise_id).first()
+    if not exercise:
+        raise ValueError("Exercise not found")
+    db.delete(exercise)
+    db.commit()
+    return {"message": "Exercise deleted successfully"}
+
+def updateExercise(db: Session, exercise_id: int, updated_data: schemas.ExerciseUpdate):
+    exercise = db.query(models.Exercise).filter(models.Exercise.id == exercise_id).first()
+    if not exercise:
+        raise ValueError("Exercise not found")
+    exercise.name = updated_data.name if updated_data.name is not None else exercise.name
+    exercise.time = updated_data.time if updated_data.time is not None else exercise.time
+    exercise.reps = updated_data.reps if updated_data.reps is not None else exercise.reps
+    exercise.weight = updated_data.weight if updated_data.weight is not None else exercise.weight
+    
+    db.commit()
+    db.refresh(exercise)
+    return exercise

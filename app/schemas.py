@@ -14,3 +14,9 @@ class ExerciseCreate(BaseModel):
 class LoginUser(BaseModel):
     email: EmailStr
     password: str
+    
+class ExerciseUpdate(BaseModel):
+    name: str | None = None
+    time: bool | None = None
+    reps: bool | None = None
+    weight: bool | None = None
